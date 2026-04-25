@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, ArrowUpRight, ArrowDownLeft, Filter } from 'lucide-react';
+import BottomNav from '../components/BottomNav';
 
 const ALL_TXN = [
   { id: 1,  name: 'Zomato',          date: 'Today, 2:30 PM',        amount: 340,    type: 'debit',  status: 'success', category: 'Food' },
@@ -138,12 +139,14 @@ const TransactionHistoryPage = () => {
       </div>
 
       {/* List */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px 100px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {filtered.length === 0
           ? <p style={{ textAlign: 'center', color: 'var(--sp-text-muted)', marginTop: '40px', fontSize: '0.875rem' }}>No transactions found</p>
           : filtered.map(tx => <TxRow key={tx.id} tx={tx} />)
         }
       </div>
+
+      <BottomNav />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Gift, Tag, Users, Clock, ChevronRight } from 'lucide-react';
+import BottomNav from '../components/BottomNav';
 
 const OFFERS = [
   {
@@ -134,9 +135,11 @@ const OffersPage = () => {
       </div>
 
       {/* Cards */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 16px 100px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {OFFERS.map(offer => <OfferCard key={offer.id} offer={offer} />)}
       </div>
+
+      <BottomNav />
     </div>
   );
 };

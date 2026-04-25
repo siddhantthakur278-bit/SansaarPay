@@ -7,6 +7,7 @@ import { Wallet, History as HistIcon } from 'lucide-react';
 import Header from './components/Header';
 import QuickActions from './components/QuickActions';
 import People from './components/People';
+import BottomNav from './components/BottomNav';
 import { ToastProvider, useToast } from './components/ToastContext';
 import QRScannerPage from './pages/QRScannerPage';
 import ContactsPage from './pages/ContactsPage';
@@ -108,7 +109,8 @@ function AppContent() {
     <div className="app-shell">
       <Header />
 
-      <main style={{ flex: 1, overflowY: 'auto', paddingBottom: '24px' }}>
+      <main style={{ flex: 1, overflowY: 'auto', paddingBottom: '100px' }}>
+
 
         {/* ── Setup Banner ─────────────────────────────────── */}
         {!setupDone && (
@@ -256,6 +258,8 @@ function AppContent() {
           </div>
         </div>
       </main>
+
+      <BottomNav />
     </div>
   );
 }
