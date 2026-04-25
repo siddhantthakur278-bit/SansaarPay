@@ -1,1 +1,117 @@
 @import "tailwindcss";
+
+/* ─── Design Tokens ─────────────────────────────────────── */
+:root {
+  /* Brand */
+  --sp-primary:        #1a237e;   /* deep indigo */
+  --sp-primary-light:  #3949ab;
+  --sp-primary-dark:   #0d1560;
+  --sp-accent:         #00897b;   /* teal green */
+  --sp-accent-light:   #4db6ac;
+  --sp-danger:         #e53935;
+  --sp-warning:        #fb8c00;
+  --sp-success:        #43a047;
+
+  /* Surfaces */
+  --sp-surface:        #ffffff;
+  --sp-bg:             #f4f6fb;
+  --sp-border:         #e8eaf0;
+  --sp-divider:        #f0f2f8;
+
+  /* Text */
+  --sp-text-primary:   #0f172a;
+  --sp-text-secondary: #64748b;
+  --sp-text-muted:     #94a3b8;
+
+  /* Shadows */
+  --sp-shadow-sm:      0 1px 3px rgba(26,35,126,0.07), 0 1px 2px rgba(26,35,126,0.04);
+  --sp-shadow-md:      0 4px 16px rgba(26,35,126,0.10), 0 2px 6px rgba(26,35,126,0.06);
+  --sp-shadow-lg:      0 10px 32px rgba(26,35,126,0.14), 0 4px 12px rgba(26,35,126,0.08);
+
+  /* Radii */
+  --sp-radius-sm:      8px;
+  --sp-radius-md:      14px;
+  --sp-radius-lg:      20px;
+  --sp-radius-xl:      28px;
+  --sp-radius-full:    9999px;
+
+  /* Gradients */
+  --sp-gradient-hero:  linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+  --sp-gradient-card:  linear-gradient(135deg, #283593 0%, #1565c0 100%);
+  --sp-gradient-success: linear-gradient(135deg, #00897b 0%, #00acc1 100%);
+}
+
+/* ─── Global Reset ───────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--sp-bg);
+  color: var(--sp-text-primary);
+  line-height: 1.5;
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 0; background: transparent; }
+
+/* ─── Focus ring ─────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--sp-primary-light);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Utility classes ────────────────────────────────────── */
+.sp-card {
+  background: var(--sp-surface);
+  border: 1px solid var(--sp-border);
+  border-radius: var(--sp-radius-lg);
+  box-shadow: var(--sp-shadow-sm);
+}
+
+.sp-btn-primary {
+  background: var(--sp-gradient-hero);
+  color: #fff;
+  border: none;
+  border-radius: var(--sp-radius-full);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: opacity 0.18s, transform 0.12s;
+}
+.sp-btn-primary:hover  { opacity: 0.92; }
+.sp-btn-primary:active { transform: scale(0.97); }
+.sp-btn-primary:disabled { background: #c8c8c8; cursor: not-allowed; }
+
+.sp-section-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--sp-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.sp-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--sp-text-secondary);
+}
