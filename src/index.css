@@ -3,41 +3,49 @@
 /* ─── Design Tokens ─────────────────────────────────────── */
 :root {
   /* Brand */
-  --sp-primary:        #1a237e;   /* deep indigo */
-  --sp-primary-light:  #3949ab;
-  --sp-primary-dark:   #0d1560;
-  --sp-accent:         #00897b;   /* teal green */
-  --sp-accent-light:   #4db6ac;
-  --sp-danger:         #e53935;
-  --sp-warning:        #fb8c00;
-  --sp-success:        #43a047;
+  --sp-primary: #1a237e; /* deep indigo */
+  --sp-primary-light: #3949ab;
+  --sp-primary-dark: #0d1560;
+  --sp-accent: #00897b; /* teal green */
+  --sp-accent-light: #4db6ac;
+  --sp-danger: #e53935;
+  --sp-warning: #fb8c00;
+  --sp-success: #43a047;
 
   /* Surfaces */
-  --sp-surface:        #ffffff;
-  --sp-bg:             #f4f6fb;
-  --sp-border:         #e8eaf0;
-  --sp-divider:        #f0f2f8;
+  --sp-surface: #ffffff;
+  --sp-bg: #f4f6fb;
+  --sp-border: #e8eaf0;
+  --sp-divider: #f0f2f8;
 
   /* Text */
-  --sp-text-primary:   #0f172a;
+  --sp-text-primary: #0f172a;
   --sp-text-secondary: #64748b;
-  --sp-text-muted:     #94a3b8;
+  --sp-text-muted: #94a3b8;
 
   /* Shadows */
-  --sp-shadow-sm:      0 1px 3px rgba(26,35,126,0.07), 0 1px 2px rgba(26,35,126,0.04);
-  --sp-shadow-md:      0 4px 16px rgba(26,35,126,0.10), 0 2px 6px rgba(26,35,126,0.06);
-  --sp-shadow-lg:      0 10px 32px rgba(26,35,126,0.14), 0 4px 12px rgba(26,35,126,0.08);
+  --sp-shadow-sm:
+    0 1px 3px rgba(26, 35, 126, 0.07), 0 1px 2px rgba(26, 35, 126, 0.04);
+  --sp-shadow-md:
+    0 4px 16px rgba(26, 35, 126, 0.1), 0 2px 6px rgba(26, 35, 126, 0.06);
+  --sp-shadow-lg:
+    0 10px 32px rgba(26, 35, 126, 0.14), 0 4px 12px rgba(26, 35, 126, 0.08);
 
   /* Radii */
-  --sp-radius-sm:      8px;
-  --sp-radius-md:      14px;
-  --sp-radius-lg:      20px;
-  --sp-radius-xl:      28px;
-  --sp-radius-full:    9999px;
+  --sp-radius-sm: 8px;
+  --sp-radius-md: 14px;
+  --sp-radius-lg: 20px;
+  --sp-radius-xl: 28px;
+  --sp-radius-full: 9999px;
 
   /* Gradients */
-  --sp-gradient-hero:  linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
-  --sp-gradient-card:  linear-gradient(135deg, #283593 0%, #1565c0 100%);
+  --sp-gradient-hero: linear-gradient(
+    135deg,
+    #1a237e 0%,
+    #283593 50%,
+    #3949ab 100%
+  );
+  --sp-gradient-card: linear-gradient(135deg, #283593 0%, #1565c0 100%);
   --sp-gradient-success: linear-gradient(135deg, #00897b 0%, #00acc1 100%);
 }
 
@@ -58,11 +66,31 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background-color: var(--sp-bg);
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(57, 73, 171, 0.16),
+      transparent 34%
+    ),
+    radial-gradient(circle at 90% 0%, rgba(0, 172, 193, 0.12), transparent 28%),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(123, 31, 162, 0.08),
+      transparent 38%
+    ),
+    var(--sp-bg);
   color: var(--sp-text-primary);
   line-height: 1.5;
   min-height: 100dvh;
+  background-attachment: fixed;
+  background-size: 140% 140%;
+  animation: bodyAmbient 18s ease-in-out infinite alternate;
 }
 
 #root {
@@ -72,7 +100,10 @@ body {
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────── */
-::-webkit-scrollbar { width: 0; background: transparent; }
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
 
 /* ─── Focus ring ─────────────────────────────────────────── */
 :focus-visible {
@@ -97,11 +128,20 @@ body {
   font-weight: 600;
   letter-spacing: 0.01em;
   cursor: pointer;
-  transition: opacity 0.18s, transform 0.12s;
+  transition:
+    opacity 0.18s,
+    transform 0.12s;
 }
-.sp-btn-primary:hover  { opacity: 0.92; }
-.sp-btn-primary:active { transform: scale(0.97); }
-.sp-btn-primary:disabled { background: #c8c8c8; cursor: not-allowed; }
+.sp-btn-primary:hover {
+  opacity: 0.92;
+}
+.sp-btn-primary:active {
+  transform: scale(0.97);
+}
+.sp-btn-primary:disabled {
+  background: #c8c8c8;
+  cursor: not-allowed;
+}
 
 .sp-section-title {
   font-size: 0.9375rem;
@@ -114,4 +154,13 @@ body {
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--sp-text-secondary);
+}
+
+@keyframes bodyAmbient {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
 }
