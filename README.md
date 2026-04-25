@@ -1,16 +1,64 @@
-# React + Vite
+<div align="center">
+  <img src="public/logo.png" alt="SansaarPay Logo" width="200"/>
+  <h1>SansaarPay</h1>
+  <p>Fast, Secure, Beautiful Payments</p>
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+SansaarPay is a modern, sleek mobile payment application clone. Built with React and Vite, it offers seamless interactions for managing contacts, making payments, scanning QR codes, checking bank balances, and viewing transaction history.
 
-Currently, two official plugins are available:
+## Project Structure
+```text
+SansaarPay/
+├── public/                 # Static assets
+│   └── logo.png            # App logo
+├── src/
+│   ├── assets/             # Images and icons used in the app
+│   ├── components/         # Reusable UI components
+│   │   ├── BottomNav.jsx   # Bottom navigation bar
+│   │   ├── Header.jsx      # Top app header
+│   │   ├── People.jsx      # Recent contacts carousel
+│   │   ├── QuickActions.jsx# Grid of quick actions (Scan, Pay, etc.)
+│   │   └── ToastContext.jsx# Custom toast notification system
+│   ├── pages/              # Application views/screens
+│   │   ├── BankBalancePage.jsx       # Check account balance
+│   │   ├── ContactsPage.jsx          # A-Z contact list
+│   │   ├── LandingPage.jsx           # Initial entry video/hero page
+│   │   ├── OffersPage.jsx            # View rewards and offers
+│   │   ├── PaymentPage.jsx           # Payment entry screen
+│   │   ├── PaymentSuccessPage.jsx    # Successful payment confirmation
+│   │   ├── QRScannerPage.jsx         # Scan QR code interface
+│   │   └── TransactionHistoryPage.jsx# List of past transactions
+│   ├── App.css             # Main component styles and animations
+│   ├── App.jsx             # Main routing and App shell component
+│   ├── index.css           # Global styles and CSS variables
+│   └── main.jsx            # React entry point
+├── package.json            # Project dependencies and scripts
+└── vite.config.js          # Vite configuration
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting Started
 
-## React Compiler
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
-## Expanding the ESLint configuration
+3. Open your browser and navigate to the localhost port provided.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+- **Aesthetic UI:** Beautiful glassmorphism UI with subtle micro-animations.
+- **Dynamic Routing:** Seamlessly navigate between pages like Contacts, QR Scanner, and History.
+- **State Management:** Simple, responsive state handling.
+- **Fully Responsive:** Adapts to mobile dimensions while providing a beautiful background experience on desktop.
+
+## Technologies Used
+- React 18
+- Vite
+- Lucide React (Icons)
+- React Router DOM
