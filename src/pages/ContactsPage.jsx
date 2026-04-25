@@ -13,17 +13,32 @@ const AVATAR_GRADS = [
 ];
 
 const ALL_CONTACTS = [
+  { name: "Amit Kumar", phone: "+91 76543 21098", lastPaid: "3 days ago" },
+  { name: "Bhavya Patel", phone: "+91 91234 56780", lastPaid: "2 weeks ago" },
+  { name: "Chetan Sharma", phone: "+91 81234 56781", lastPaid: "1 month ago" },
+  { name: "Divya Gupta", phone: "+91 71234 56782", lastPaid: "5 days ago" },
+  { name: "Ekta Singh", phone: "+91 61234 56783", lastPaid: "1 week ago" },
+  { name: "Farhan Ansari", phone: "+91 92234 56784", lastPaid: "2 days ago" },
+  { name: "Gaurav Joshi", phone: "+91 82234 56785", lastPaid: "3 months ago" },
+  { name: "Hina Khan", phone: "+91 72234 56786", lastPaid: "10 days ago" },
+  { name: "Ishaan Malhotra", phone: "+91 62234 56787", lastPaid: "Just now" },
+  { name: "Jatin Verma", phone: "+91 93234 56788", lastPaid: "1 month ago" },
+  { name: "Karan Joshi", phone: "+91 32109 87654", lastPaid: "5 days ago" },
+  { name: "Lakshya Rai", phone: "+91 83234 56789", lastPaid: "2 weeks ago" },
+  { name: "Manish Tiwari", phone: "+91 73234 56780", lastPaid: "1 day ago" },
+  { name: "Neha Agarwal", phone: "+91 63234 56781", lastPaid: "4 days ago" },
+  { name: "Omkar Desai", phone: "+91 94234 56782", lastPaid: "3 weeks ago" },
+  { name: "Priya Singh", phone: "+91 65432 10987", lastPaid: "Just now" },
+  { name: "Qasim Ali", phone: "+91 84234 56783", lastPaid: "1 month ago" },
   { name: "Rahul Sharma", phone: "+91 98765 43210", lastPaid: "2 days ago" },
   { name: "Sneha Patel", phone: "+91 87654 32109", lastPaid: "1 week ago" },
-  { name: "Amit Kumar", phone: "+91 76543 21098", lastPaid: "3 days ago" },
-  { name: "Priya Singh", phone: "+91 65432 10987", lastPaid: "Just now" },
-  {
-    name: "Vikram Malhotra",
-    phone: "+91 54321 09876",
-    lastPaid: "1 month ago",
-  },
-  { name: "Anjali Gupta", phone: "+91 43210 98765", lastPaid: "2 weeks ago" },
-  { name: "Karan Joshi", phone: "+91 32109 87654", lastPaid: "5 days ago" },
+  { name: "Tarun Bajaj", phone: "+91 95234 56784", lastPaid: "5 days ago" },
+  { name: "Uday Chopra", phone: "+91 85234 56785", lastPaid: "2 weeks ago" },
+  { name: "Vikram Malhotra", phone: "+91 54321 09876", lastPaid: "1 month ago" },
+  { name: "Waqar Younis", phone: "+91 96234 56786", lastPaid: "1 week ago" },
+  { name: "Xavier D'Souza", phone: "+91 86234 56787", lastPaid: "2 days ago" },
+  { name: "Yash Kapoor", phone: "+91 76234 56788", lastPaid: "Just now" },
+  { name: "Zara Sheikh", phone: "+91 66234 56789", lastPaid: "3 weeks ago" }
 ];
 
 const ContactsPage = () => {
