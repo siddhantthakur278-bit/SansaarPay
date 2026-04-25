@@ -16,7 +16,7 @@ const QRScannerPage = () => {
         position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10
       }}>
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/home')}
           style={{
             width: 36, height: 36, borderRadius: '50%',
             background: 'rgba(255,255,255,0.15)',

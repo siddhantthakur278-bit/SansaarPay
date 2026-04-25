@@ -7,7 +7,7 @@ const BottomNav = () => {
   const location = useLocation();
 
   const NAV_ITEMS = [
-    { label: 'Home',    icon: Home,    path: '/' },
+    { label: 'Home',    icon: Home,    path: '/home' },
     { label: 'History', icon: History, path: '/history' },
     { label: 'Scan',    icon: QrCode,  path: '/qr-scanner', center: true },
     { label: 'Offers',  icon: User,    path: '/offers' }, // Reusing User icon for Offers or just keep it as User for profile
