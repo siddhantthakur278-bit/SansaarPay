@@ -1,59 +1,127 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, UserPlus } from 'lucide-react';
 import { useToast } from './ToastContext';
+import { useNavigate } from 'react-router-dom';
 
-const PersonAvatar = ({ name, color, onClick }) => (
-  <div 
-    className="flex flex-col items-center gap-2 cursor-pointer group"
+const AVATAR_GRADS = [
+  'linear-gradient(135deg,#f4511e,#ff7043)',
+  'linear-gradient(135deg,#c2185b,#e91e63)',
+  'linear-gradient(135deg,#2e7d32,#43a047)',
+  'linear-gradient(135deg,#6a1b9a,#9c27b0)',
+  'linear-gradient(135deg,#0277bd,#039be5)',
+  'linear-gradient(135deg,#f57f17,#fbc02d)',
+  'linear-gradient(135deg,#c62828,#e53935)',
+];
+
+const PersonAvatar = ({ name, grad, onClick }) => (
+  <button
     onClick={onClick}
+    style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '7px',
+      background: 'none', border: 'none', cursor: 'pointer', padding: '2px',
+    }}
   >
-    <div className={`w-14 h-14 rounded-full ${color} flex items-center justify-center text-white text-xl font-semibold shadow-sm transition-transform group-active:scale-95 group-hover:opacity-90`}>
-      {name[0]}
+    <div
+      style={{
+        width: 52, height: 52,
+        borderRadius: '50%',
+        background: grad,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: '1.125rem',
+        boxShadow: '0 3px 10px rgba(0,0,0,0.13)',
+        transition: 'transform 0.14s, box-shadow 0.14s',
+        border: '2.5px solid var(--sp-surface)',
+        outline: '2px solid transparent',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.08)'; e.currentTarget.style.outline = '2px solid rgba(26,35,126,0.25)'; }}
+      onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)';    e.currentTarget.style.outline = '2px solid transparent'; }}
+      onMouseDown={e  => { e.currentTarget.style.transform = 'scale(0.93)'; }}
+      onMouseUp={e    => { e.currentTarget.style.transform = 'scale(1.08)'; }}
+    >
+      {name[0].toUpperCase()}
     </div>
-    <span className="text-xs font-medium text-gray-700">{name}</span>
-  </div>
+    <span style={{ fontSize: '0.6875rem', fontWeight: 500, color: 'var(--sp-text-secondary)', maxWidth: 60, textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+      {name.split(' ')[0]}
+    </span>
+  </button>
 );
 
 const People = () => {
   const { showToast } = useToast();
-
-  const handlePersonClick = (name) => {
-    showToast(`Opening payment to ${name}`, 'success');
-    setTimeout(() => showToast(`Enter amount to send to ${name}`, 'info'), 800);
-  };
-
-  const handleExploreClick = () => {
-    showToast('Opening contacts explorer', 'info');
-  };
+  const navigate    = useNavigate();
 
   const people = [
-    { name: 'Rahul', color: 'bg-orange-500', onClick: () => handlePersonClick('Rahul') },
-    { name: 'Sneha', color: 'bg-pink-500', onClick: () => handlePersonClick('Sneha') },
-    { name: 'Amit', color: 'bg-green-600', onClick: () => handlePersonClick('Amit') },
-    { name: 'Priya', color: 'bg-purple-600', onClick: () => handlePersonClick('Priya') },
-    { name: 'Vikram', color: 'bg-blue-500', onClick: () => handlePersonClick('Vikram') },
-    { name: 'Anjali', color: 'bg-yellow-600', onClick: () => handlePersonClick('Anjali') },
-    { name: 'Karan', color: 'bg-red-500', onClick: () => handlePersonClick('Karan') },
+    { name: 'Rahul',  grad: AVATAR_GRADS[0] },
+    { name: 'Sneha',  grad: AVATAR_GRADS[1] },
+    { name: 'Amit',   grad: AVATAR_GRADS[2] },
+    { name: 'Priya',  grad: AVATAR_GRADS[3] },
+    { name: 'Vikram', grad: AVATAR_GRADS[4] },
+    { name: 'Anjali', grad: AVATAR_GRADS[5] },
+    { name: 'Karan',  grad: AVATAR_GRADS[6] },
   ];
 
   return (
-    <div className="p-6 bg-white">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800">People</h2>
-        <button 
-          className="flex items-center text-blue-600 text-sm font-semibold px-4 py-1.5 rounded-full border border-gray-200 hover:bg-blue-50 transition-colors"
-          onClick={handleExploreClick}
+    <section style={{ background: 'var(--sp-surface)', padding: '20px 16px 18px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <h2 className="sp-section-title">People</h2>
+        <button
+          onClick={() => navigate('/contacts')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '4px',
+            background: 'none',
+            border: '1.5px solid var(--sp-border)',
+            borderRadius: '50px',
+            padding: '5px 12px',
+            fontSize: '0.75rem', fontWeight: 600,
+            color: 'var(--sp-primary-light)',
+            cursor: 'pointer',
+            transition: 'background 0.15s',
+            fontFamily: "'Inter', sans-serif",
+          }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(26,35,126,0.05)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'none'}
         >
-          Explore
-          <ChevronRight className="w-4 h-4 ml-1" />
+          All
+          <ChevronRight style={{ width: 14, height: 14 }} />
         </button>
       </div>
-      <div className="grid grid-cols-4 gap-y-6 gap-x-2">
-        {people.map((person, index) => (
-          <PersonAvatar key={index} {...person} />
+
+      <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px' }}>
+        {/* Add new */}
+        <button
+          onClick={() => navigate('/contacts')}
+          style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '7px',
+            background: 'none', border: 'none', cursor: 'pointer', padding: '2px', flexShrink: 0, minWidth: 60,
+          }}
+        >
+          <div style={{
+            width: 52, height: 52, borderRadius: '50%',
+            background: 'rgba(26,35,126,0.07)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            border: '2px dashed rgba(26,35,126,0.25)',
+          }}>
+            <UserPlus style={{ width: 20, height: 20, color: 'var(--sp-primary-light)' }} />
+          </div>
+          <span style={{ fontSize: '0.6875rem', fontWeight: 500, color: 'var(--sp-primary-light)' }}>New</span>
+        </button>
+
+        {people.map((p) => (
+          <div key={p.name} style={{ flexShrink: 0, minWidth: 60 }}>
+            <PersonAvatar
+              name={p.name}
+              grad={p.grad}
+              onClick={() => {
+                showToast(`Opening payment to ${p.name}`, 'info');
+                setTimeout(() => navigate('/payment'), 400);
+              }}
+            />
+          </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
