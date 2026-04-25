@@ -1,210 +1,261 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
-import Header from "./components/Header";
-import QuickActions from "./components/QuickActions";
-import People from "./components/People";
-import { History, ShieldCheck, Plus, ChevronRight } from "lucide-react";
-import { ToastProvider, useToast } from "./components/ToastContext";
-import QRScannerPage from "./pages/QRScannerPage";
-import ContactsPage from "./pages/ContactsPage";
-import PaymentPage from "./pages/PaymentPage";
-import PaymentSuccessPage from "./pages/PaymentSuccessPage";
-import BankBalancePage from "./pages/BankBalancePage";
-import TransactionHistoryPage from "./pages/TransactionHistoryPage";
-import OffersPage from "./pages/OffersPage";
+  Routes, Route, useNavigate,
+} from 'react-router-dom';
+import { Wallet, History as HistIcon } from 'lucide-react';
+import Header from './components/Header';
+import QuickActions from './components/QuickActions';
+import People from './components/People';
+import { ToastProvider, useToast } from './components/ToastContext';
+import QRScannerPage from './pages/QRScannerPage';
+import ContactsPage from './pages/ContactsPage';
+import PaymentPage from './pages/PaymentPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
+import BankBalancePage from './pages/BankBalancePage';
+import TransactionHistoryPage from './pages/TransactionHistoryPage';
+import OffersPage from './pages/OffersPage';
+import './App.css';
 
+/* ─── Business tile ──────────────────────────────────────── */
+const BizTile = ({ name, icon, grad, onClick }) => (
+  <button onClick={onClick} style={{
+    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+    background: 'none', border: 'none', cursor: 'pointer',
+  }}>
+    <div style={{
+      width: 56, height: 56, borderRadius: '18px',
+      background: grad,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontWeight: 800, fontSize: '1.35rem', color: '#fff',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.13)',
+      transition: 'transform 0.13s',
+    }}
+      onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.07)'}
+      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+      onMouseDown={e => e.currentTarget.style.transform = 'scale(0.94)'}
+      onMouseUp={e => e.currentTarget.style.transform = 'scale(1.07)'}
+    >
+      {icon}
+    </div>
+    <span style={{ fontSize: '0.6875rem', fontWeight: 500, color: 'var(--sp-text-secondary)' }}>{name}</span>
+  </button>
+);
+
+/* ─── Offer card ─────────────────────────────────────────── */
+const OfferCard = ({ emoji, label, bgCol, onClick }) => (
+  <button onClick={onClick} style={{
+    background: bgCol, border: 'none', borderRadius: '16px',
+    padding: '16px 10px', cursor: 'pointer',
+    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+    flex: 1,
+    transition: 'transform 0.13s',
+  }}
+    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
+    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+  >
+    <span style={{ fontSize: '2rem' }}>{emoji}</span>
+    <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--sp-text-primary)' }}>{label}</span>
+  </button>
+);
+
+/* ─── Row action button (bank balance / history) ─────────── */
+const RowAction = ({ icon: Icon, label, iconColor, onClick }) => (
+  <button onClick={onClick} style={{
+    width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    padding: '14px 16px',
+    background: 'var(--sp-surface)',
+    border: '1.5px solid var(--sp-border)',
+    borderRadius: '14px',
+    cursor: 'pointer',
+    transition: 'background 0.14s, box-shadow 0.14s',
+    fontFamily: "'Inter', sans-serif",
+  }}
+    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(26,35,126,0.03)'; e.currentTarget.style.boxShadow = 'var(--sp-shadow-sm)'; }}
+    onMouseLeave={e => { e.currentTarget.style.background = 'var(--sp-surface)'; e.currentTarget.style.boxShadow = 'none'; }}
+  >
+    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+      <div style={{
+        width: 38, height: 38, borderRadius: '12px',
+        background: 'rgba(26,35,126,0.07)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <Icon style={{ width: 18, height: 18, color: iconColor || 'var(--sp-primary-light)' }} />
+      </div>
+      <span style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--sp-text-primary)' }}>{label}</span>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sp-text-muted)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  </button>
+);
+
+/* ─── Main content ───────────────────────────────────────── */
 function AppContent() {
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const [setupComplete, setSetupComplete] = useState(false);
+  const [setupDone, setSetupDone] = useState(false);
+  const [balanceHidden, setBalanceHidden] = useState(false);
 
-  const handleSetupComplete = () => {
-    setSetupComplete(true);
-    showToast("SansarPay balance setup complete!", "success");
-  };
-
-  const handleBusinessClick = (businessName) => {
-    showToast(`Opening ${businessName} payment`, "success");
-    setTimeout(() => navigate("/payment"), 600);
-  };
-
-  const handleOfferClick = (offerType) => {
-    navigate("/offers");
-  };
-
-  const handleBankBalance = () => {
-    navigate("/bank-balance");
-  };
-
-  const handleTransactionHistory = () => {
-    navigate("/history");
-  };
-
-  const handleFABClick = () => {
-    navigate("/contacts");
-  };
+  const BUSINESSES = [
+    { name: 'Zomato',  icon: 'Z', grad: 'linear-gradient(135deg,#e53935,#ef5350)' },
+    { name: 'Swiggy',  icon: 'Sw', grad: 'linear-gradient(135deg,#e65100,#ff7043)' },
+    { name: 'Airtel',  icon: 'Ai', grad: 'linear-gradient(135deg,#c62828,#ef5350)' },
+    { name: 'Jio',     icon: 'J',  grad: 'linear-gradient(135deg,#0d47a1,#1565c0)' },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50 max-w-md mx-auto shadow-2xl overflow-hidden font-sans flex flex-col">
-      {/* Status Bar (Simulated) */}
-      <div className="bg-white px-6 py-2 flex justify-between items-center text-xs font-medium text-gray-500">
-        <span>SansarPay</span>
-        <div className="flex gap-2">
-          <span>LTE</span>
-          <span>85%</span>
-        </div>
-      </div>
-
+    <div className="app-shell">
       <Header />
 
-      <main className="flex-1 overflow-y-auto pb-20">
-        {/* Banner */}
-        {!setupComplete && (
-          <div className="p-4">
-            <div className="bg-blue-50 rounded-2xl p-4 flex items-center justify-between border border-blue-100">
+      <main style={{ flex: 1, overflowY: 'auto', paddingBottom: '24px' }}>
+
+        {/* ── Setup Banner ─────────────────────────────────── */}
+        {!setupDone && (
+          <div style={{ padding: '12px 16px 0' }}>
+            <div style={{
+              background: 'linear-gradient(135deg,rgba(26,35,126,0.07),rgba(57,73,171,0.05))',
+              border: '1.5px solid rgba(26,35,126,0.12)',
+              borderRadius: '14px',
+              padding: '14px 16px',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
               <div>
-                <h3 className="font-semibold text-blue-900 text-sm">
-                  Setup SansarPay balance
-                </h3>
-                <p className="text-xs text-blue-700 mt-1">
-                  Make payments without a bank account
+                <p style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--sp-primary)', marginBottom: 3 }}>
+                  Activate SansaarPay Balance
+                </p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--sp-text-secondary)' }}>
+                  Pay without a bank account
                 </p>
               </div>
               <button
-                className="bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-blue-700 transition-colors"
-                onClick={handleSetupComplete}
+                onClick={() => { setSetupDone(true); showToast('SansaarPay balance activated!', 'success'); }}
+                style={{
+                  background: 'var(--sp-gradient-hero)',
+                  color: '#fff', border: 'none',
+                  borderRadius: '50px',
+                  padding: '8px 18px',
+                  fontSize: '0.75rem', fontWeight: 600,
+                  cursor: 'pointer', flexShrink: 0,
+                  fontFamily: "'Inter', sans-serif",
+                }}
               >
-                Finish
+                Set Up
               </button>
             </div>
           </div>
         )}
 
-        <QuickActions />
+        {/* ── Balance Card ─────────────────────────────────── */}
+        <div style={{ padding: '14px 16px 0' }}>
+          <div style={{
+            background: 'var(--sp-gradient-hero)',
+            borderRadius: '20px',
+            padding: '20px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            boxShadow: 'var(--sp-shadow-md)',
+          }}>
+            <div>
+              <p style={{ fontSize: '0.72rem', fontWeight: 500, color: 'rgba(255,255,255,0.65)', marginBottom: '4px', letterSpacing: '0.04em' }}>
+                SANSAARPAY WALLET
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>
+                  {balanceHidden ? '₹ ••••••' : '₹ 12,345'}
+                </span>
+                <button
+                  onClick={() => setBalanceHidden(!balanceHidden)}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)', padding: 0 }}
+                >
+                  {balanceHidden
+                    ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  }
+                </button>
+              </div>
+              <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)', marginTop: '4px' }}>siddhant@sansaarpay</p>
+            </div>
+            <div style={{
+              width: 52, height: 52,
+              borderRadius: '16px',
+              background: 'rgba(255,255,255,0.15)',
+              border: '1.5px solid rgba(255,255,255,0.25)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-        <div className="h-2 bg-gray-100" />
+        {/* ── Quick Actions ─────────────────────────────────── */}
+        <div style={{ marginTop: '12px' }}>
+          <QuickActions />
+        </div>
 
+        <div className="sp-divider" style={{ margin: '4px 0' }} />
+
+        {/* ── People ───────────────────────────────────────── */}
         <People />
 
-        <div className="h-2 bg-gray-100" />
+        <div className="sp-divider" style={{ margin: '4px 0' }} />
 
-        {/* Businesses Section */}
-        <div className="p-6 bg-white">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-800">Businesses</h2>
+        {/* ── Businesses ───────────────────────────────────── */}
+        <section style={{ background: 'var(--sp-surface)', padding: '20px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+            <h2 className="sp-section-title">Popular Businesses</h2>
             <button
-              className="flex items-center text-blue-600 text-sm font-semibold px-4 py-1.5 rounded-full border border-gray-200 hover:bg-blue-50 transition-colors"
-              onClick={() => showToast("Exploring businesses", "info")}
+              onClick={() => showToast('Exploring businesses', 'info')}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '4px',
+                background: 'none', border: '1.5px solid var(--sp-border)', borderRadius: '50px',
+                padding: '5px 12px', fontSize: '0.75rem', fontWeight: 600,
+                color: 'var(--sp-primary-light)', cursor: 'pointer',
+                fontFamily: "'Inter', sans-serif",
+              }}
             >
-              Explore
-              <ChevronRight className="w-4 h-4 ml-1" />
+              More
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
           </div>
-          <div className="grid grid-cols-4 gap-y-6 gap-x-2">
-            {[
-              { name: "Zomato", icon: "Z", color: "bg-red-500" },
-              { name: "Swiggy", icon: "S", color: "bg-orange-500" },
-              { name: "Airtel", icon: "A", color: "bg-red-600" },
-              { name: "Jio", icon: "J", color: "bg-blue-700" },
-            ].map((biz, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center gap-2 cursor-pointer group"
-                onClick={() => handleBusinessClick(biz.name)}
-              >
-                <div
-                  className={`w-14 h-14 rounded-full ${biz.color} flex items-center justify-center text-white text-xl font-bold shadow-sm transition-transform group-active:scale-95 group-hover:opacity-90`}
-                >
-                  {biz.icon}
-                </div>
-                <span className="text-xs font-medium text-gray-700">
-                  {biz.name}
-                </span>
-              </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+            {BUSINESSES.map(b => (
+              <BizTile key={b.name} {...b} onClick={() => { showToast(`Opening ${b.name}`, 'success'); setTimeout(() => navigate('/payment'), 600); }} />
             ))}
           </div>
-        </div>
+        </section>
 
-        <div className="h-2 bg-gray-100" />
+        <div className="sp-divider" style={{ margin: '4px 0' }} />
 
-        {/* Offers & Rewards */}
-        <div className="p-6 bg-white">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Offers and rewards
-          </h2>
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: "Rewards", icon: "🎁", color: "bg-blue-50" },
-              { label: "Offers", icon: "🏷️", color: "bg-pink-50" },
-              { label: "Referrals", icon: "🤝", color: "bg-green-50" },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center gap-2 cursor-pointer group"
-                onClick={() => handleOfferClick(item.label)}
-              >
-                <div
-                  className={`w-full aspect-square rounded-2xl ${item.color} flex items-center justify-center text-2xl group-hover:scale-105 transition-transform`}
-                >
-                  {item.icon}
-                </div>
-                <span className="text-xs font-medium text-gray-700">
-                  {item.label}
-                </span>
-              </div>
-            ))}
+        {/* ── Offers & Rewards ─────────────────────────────── */}
+        <section style={{ background: 'var(--sp-surface)', padding: '20px 16px' }}>
+          <h2 className="sp-section-title" style={{ marginBottom: '14px' }}>Offers & Rewards</h2>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <OfferCard emoji="🎁" label="Rewards"  bgCol="rgba(26,35,126,0.07)"   onClick={() => navigate('/offers')} />
+            <OfferCard emoji="🏷️" label="Offers"   bgCol="rgba(233,30,99,0.07)"   onClick={() => navigate('/offers')} />
+            <OfferCard emoji="🤝" label="Referrals" bgCol="rgba(0,137,123,0.08)"   onClick={() => navigate('/offers')} />
           </div>
-        </div>
+        </section>
 
-        {/* Footer Actions */}
-        <div className="px-6 py-4 space-y-4">
-          <button
-            className="w-full flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
-            onClick={handleBankBalance}
-          >
-            <div className="flex items-center gap-4">
-              <History className="w-6 h-6 text-blue-600" />
-              <span className="font-medium text-gray-800">
-                Check bank balance
-              </span>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-          <button
-            className="w-full flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
-            onClick={handleTransactionHistory}
-          >
-            <div className="flex items-center gap-4">
-              <History className="w-6 h-6 text-blue-600" />
-              <span className="font-medium text-gray-800">
-                See transaction history
-              </span>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-        </div>
+        <div className="sp-divider" style={{ margin: '4px 0' }} />
 
-        <div className="p-8 text-center text-gray-400 text-xs">
-          <div className="flex items-center justify-center gap-1 mb-2">
-            <ShieldCheck className="w-4 h-4" />
-            <span>SECURED WITH SansarPay</span>
+        {/* ── Footer actions ────────────────────────────────── */}
+        <section style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <RowAction icon={Wallet}   label="Check Bank Balance" onClick={() => navigate('/bank-balance')} />
+          <RowAction icon={HistIcon} label="Transaction History" onClick={() => navigate('/history')} />
+        </section>
+
+        {/* ── Footer note ───────────────────────────────────── */}
+        <div style={{ padding: '12px 16px 8px', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', color: 'var(--sp-text-muted)', fontSize: '0.70rem' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span>256-bit SSL secured · Regulated by RBI</span>
           </div>
-          <p>UPI ID: siddhant@sansarpay</p>
         </div>
       </main>
-
-      {/* Floating Action Button */}
-      <button
-        className="fixed bottom-6 right-6 w-14 h-14 bg-white rounded-2xl shadow-xl border border-gray-100 flex items-center justify-center text-blue-600 transition-transform active:scale-95 z-20 md:absolute md:bottom-10 md:right-10 hover:bg-blue-50 hover:shadow-2xl"
-        onClick={handleFABClick}
-      >
-        <Plus className="w-8 h-8" />
-      </button>
     </div>
   );
 }
@@ -214,14 +265,14 @@ function App() {
     <Router>
       <ToastProvider>
         <Routes>
-          <Route path="/" element={<AppContent />} />
-          <Route path="/qr-scanner" element={<QRScannerPage />} />
-          <Route path="/contacts" element={<ContactsPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/"                element={<AppContent />} />
+          <Route path="/qr-scanner"      element={<QRScannerPage />} />
+          <Route path="/contacts"        element={<ContactsPage />} />
+          <Route path="/payment"         element={<PaymentPage />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
-          <Route path="/bank-balance" element={<BankBalancePage />} />
-          <Route path="/history" element={<TransactionHistoryPage />} />
-          <Route path="/offers" element={<OffersPage />} />
+          <Route path="/bank-balance"    element={<BankBalancePage />} />
+          <Route path="/history"         element={<TransactionHistoryPage />} />
+          <Route path="/offers"          element={<OffersPage />} />
         </Routes>
       </ToastProvider>
     </Router>
