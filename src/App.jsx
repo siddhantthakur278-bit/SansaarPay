@@ -15,6 +15,8 @@ import ContactsPage from "./pages/ContactsPage";
 import PaymentPage from "./pages/PaymentPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import BankBalancePage from "./pages/BankBalancePage";
+import TransactionHistoryPage from "./pages/TransactionHistoryPage";
+import OffersPage from "./pages/OffersPage";
 
 function AppContent() {
   const { showToast } = useToast();
@@ -32,7 +34,7 @@ function AppContent() {
   };
 
   const handleOfferClick = (offerType) => {
-    showToast(`Viewing ${offerType}`, "info");
+    navigate("/offers");
   };
 
   const handleBankBalance = () => {
@@ -40,8 +42,7 @@ function AppContent() {
   };
 
   const handleTransactionHistory = () => {
-    showToast("Opening transaction history", "info");
-    setTimeout(() => showToast("Last 30 transactions loaded", "success"), 1200);
+    navigate("/history");
   };
 
   const handleFABClick = () => {
@@ -219,6 +220,8 @@ function App() {
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/bank-balance" element={<BankBalancePage />} />
+          <Route path="/history" element={<TransactionHistoryPage />} />
+          <Route path="/offers" element={<OffersPage />} />
         </Routes>
       </ToastProvider>
     </Router>
